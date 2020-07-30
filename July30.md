@@ -1,7 +1,8 @@
 # Database Definition 
 データベースの定義 
 
-## InnoDBとは
+## 用語
+### InnoDB
 MySQL5.5以上の、デフォルトのストレージエンジン。  
 
 > ストレートエンジンはストレージから必要な情報を引き出したり、保存したりします。または引き出した情報を目的に合わせて変更する場合もあります。これがストレートエンジンの大きな役割となります。
@@ -9,27 +10,67 @@ MySQL5.5以上の、デフォルトのストレージエンジン。
 
 参考：[MySQLのストレージエンジンと特徴](https://www.softagency.co.jp/column/column34#:~:text=MySQL%E3%81%AF%E3%83%AA%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%8A%E3%83%AB%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9%E3%81%A8%E3%81%97%E3%81%A6,%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%80%8D%E3%81%A8%E3%81%84%E3%81%84%E3%81%BE%E3%81%99%E3%80%82)
 
+### インデックス
+データベースで作成することのできる索引情報。  
+作成するには、`CREATE INDEX`を使用する。  
+
+特徴  
+- 指定した列に対してつくした列に対して作られる
+- 存在する列に対して検索が行われたとき、高速になることが多い  
+- インデックスには名前を付けなければいけない  
+
+```
+CREATE INDEX インデックス名
+
+//MySQL, MariaDB 
+CREATE INDEX インデックス名 ON テーブル名
+```
 
 # 基本の操作
-## 新規DB作成
 ```
-mysql> CREATE DATABASE データベース名;
+//新規DB作成
+CREATE DATABASE データベース名;
+
+//既存DB表示 
+SHOW DATABASES;
+
+//使用するデータベースを選択
+USE データベース名;
+```
+```
+//テーブル削除
+DROP TABLE テーブル
+
+//テーブルの全行を削除（初期化）
+TRUNCATE TABLE テーブル
+
+//カレントデータベースのテーブル名を表示
+SHOW TABLES
+
+//指定したテーブルのフィールドを表示
+SHOW COLUMNS データベース名.テーブル名
+
+
 ```
 
-## 既存DB表示
+
+## 更新
+既存テーブルに列を追加する場合、挿入位置は原則として一番最後になる。  
+DBMSによっては、挿入位置を任意に指定できるものもある。  
 ```
-mysql> SHOW DATABASES;
+//列を追加
+ALTER TABLE テーブル ADD 列名 型 制約
+
+//列を削除
+ALTER TABLE テーブル DROP 列名 型 制約
+
+//カラム名を変更
+ALTER TABLE テーブル名 rename to 新テーブル名
+
+//型を変更
+ALTER TABLE テーブル名 modify 列名 型
 ```
 
-## DB削除
-```
-mysql> DROP DATABASE (データベース名)
-```
-
-## 使用するデータベースを選択
-```
-mysql> USE データベース名;
-```
 
 ## ストレートエンジンを指定
 ENGINE オプションを省略した場合、デフォルトのストレージエンジンが使用される
@@ -78,7 +119,7 @@ REAL
 その他の整数値関連の型：[整数型(TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT)](https://www.dbonline.jp/mysql/type/index1.html)
 
 
-文字列
+### 文字列
 ```
 //固定長 ex) 215-0032（郵便番号）
 CHAR
@@ -158,28 +199,6 @@ CREATE TABLE テーブル名 (
 
 
 
-## 削除
-テーブル削除
-```
-DROP TABLE テーブル
-```
-
-テーブルの全行を削除（初期化）
-```
-TRUNCATE TABLE テーブル
-```
-
-
-## 更新
-既存テーブルに列を追加する場合、挿入位置は原則として一番最後になる。  
-DBMSによっては、挿入位置を任意に指定できるものもある。  
-```
-//列を追加
-ALTER TABLE テーブル ADD 列名 型 制約
-
-//列を削除
-ALTER TABLE テーブル DROP 列名 型 制約
-```
-
 # 参考
-[15.1 ストレージエンジンの設定](https://dev.mysql.com/doc/refman/5.6/ja/storage-engine-setting.html)
+- [15.1 ストレージエンジンの設定](https://dev.mysql.com/doc/refman/5.6/ja/storage-engine-setting.html)  
+- [テーブル構造を変更する(ALTER TABLE文)](https://www.dbonline.jp/mysql/table/index18.html#section2)
