@@ -1,6 +1,5 @@
 # Database Definition 
-データベースの定義。  
-1つのデータベースにテーブルは1つだけ持てる。  
+データベースの定義 
 
 ## InnoDBとは
 MySQL5.5以上の、デフォルトのストレージエンジン。  
@@ -20,6 +19,11 @@ mysql> CREATE DATABASE データベース名;
 ## 既存DB表示
 ```
 mysql> SHOW DATABASES;
+```
+
+## DB削除
+```
+mysql> DROP DATABASE (データベース名)
 ```
 
 ## 使用するデータベースを選択
@@ -50,15 +54,29 @@ CREATE TABLE テーブル (
 ```
 
 ## 型
-数値
+### 数値
 ```
-//整数値 ex) 3000
+//整数値 符号付き -2147483648~2147483647 / 符号なし0~4294967295
 INTEGER
+
+//整数値 符号付き -9223372036854775808〜9223372036854775807 / 符号なし 0〜18446744073709551615
+BIGINT
+
+//整数値 符号付き -128〜127 / 符号なし 0〜255
+TINYINT
+
+//整数値 符号付き -32768〜32767 / 符号なし 0〜65535
+SMALLINT
+
+//整数値 符号付き -8388608〜8388607 / 符号なし 0〜16777215
+MEDIUMINT
 
 //小数 　ex) 1.2
 DECIMAL
 REAL
 ```
+その他の整数値関連の型：[整数型(TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT)](https://www.dbonline.jp/mysql/type/index1.html)
+
 
 文字列
 ```
@@ -78,12 +96,17 @@ TIME     ex) 12:00
 
 
 ## 制約設定
-`NOT NULL`      : NULLの格納を禁止する。  
-`UNIQUE`        : ある列の内容が重複してはいけない場合。NULLの重複は許容される。  
-`CHECK (条件式)`: 条件式が真となる値だけが格納を許容される。  
-`PRIMARY KEY`   : idなど、行を特定するために設定される列。UNIQUEかつNOT NULLの値。  
-`REFERENCES 参照先テーブル(参照先列) `: 外部キー制約をかける。  
-`FOREIGN KEY(参照元列名) REFERENCES 参照っ先テーブル名(参照先列名)`: CREATE TABLE文の最後にまとめて外部キー制約をかける。  
+|制約|概要|
+|:---|:---|
+| NOT NULL | NULLの格納を禁止する |
+| UNIQUE | ある列の内容が重複してはいけない場合。NULLの重複は許容される|
+| CHECK (条件式) | 条件式が真となる値だけが格納を許容される | 
+| PRIMARY KEY | idなど、行を特定するために設定される列。UNIQUEかつNOT NULLの値|
+| REFERENCES 参照先テーブル(参照先列) | 外部キー制約をかける |
+| FOREIGN KEY(参照元列名) |
+|REFERENCES 参照先テーブル名(参照先列名)。CREATE TABLE文の最後にまとめて外部キー制約をかける|
+
+
 ```
 CREATE TABLE 家計簿 (
   日付   DATE         NOT NULL,
@@ -98,6 +121,41 @@ CREATE TABLE 費目 (
   名前 VARCHAR(40) UNIQUE,
 )
 ```
+
+### PRIMARY KEY 
+idなど、行を特定するために設定される列。UNIQUEかつNOT NULLの値
+```
+//単一行をPrimary Keyとして指定するとき
+CREATE TABLE 家計簿 (
+    id  INTEGER  PRIMARY KEY,
+    name VARCHAR(100)
+)
+
+//複数行をPrimary keyとして指定するとき
+CREATE TABLE 家計簿 (
+    id  INTEGER,
+    name VARCHAR(100),
+    PRIMARY KEY(id, name)
+)
+```
+
+### 外部キー制約（FOREIGN KEY）
+参照整合性が崩れるようなデータ操作をしようとした場合にエラーを発生させ、強制的に処理を中断させる制約。 
+```
+//単一行に制約をかける
+CREATE TABLE テーブル名 (
+  列1  列1の型, 
+  列2  列2の型 REFERENCES 参照先テーブル名(参照先列名), 
+)
+
+//複数行に制約をかける
+CREATE TABLE テーブル名 (
+  列1  列1の型,
+  列2  列2の型,
+  FOREIGN KEY(参照元列名) REFERENCES 参照先テーブル名(参照先列名)
+)
+```
+
 
 
 ## 削除
