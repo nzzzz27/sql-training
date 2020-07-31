@@ -80,5 +80,9 @@ select count(age) from user;
 
 //重複を含まないレコード数の取得
 select count(distinct age) from user;
+
+//カラムの値ごとにレコード数を取得
+select age, count(*) from user group by age;
 ```
+
 

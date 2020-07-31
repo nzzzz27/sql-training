@@ -260,12 +260,7 @@ select count(*) from user;
     Q6-15
     userテーブルに対して、ageカラムの値ごとに、レコード数を集計するクエリ
 */
-
-
-
-
-
-
+select age, count(*) from user group by age; 
 
 
 
