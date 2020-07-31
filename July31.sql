@@ -214,6 +214,56 @@ select * from user where age <= 20;
 */
 select * from user_info where phone like "080%";  
 
+/* 
+    Q6-8 
+    user_info テーブルに対して、 email が @nextbeat.net で終わるレコードのみ取得するクエリ
+*/
+select * from user_info where email like "%@nextbeat.net";
+
+/* 
+    Q6-9 
+    user_info テーブルに対して, user_id が 1 ではないレコードを取得するクエリ
+*/
+select * from user_info where user_id not like 1;
+
+/* 
+    Q6-10
+    user テーブルに対して、 id が 2 ~ 4 までのレコードを BETWEEN句を使用して取得するクエリ
+*/
+select * from user where id between 2 and 4; 
+
+/* 
+    Q6-11 
+    user テーブルに対して、 id が [1,4] のレコードのみ取得するクエリ
+*/
+select * from user where id=1 or id=4;
+
+/*
+    Q6-12 
+    user テーブルに対して、idで降順ソートしうち2件までレコードを取得するクエリ
+*/
+select * from user order by id desc limit 0, 2;
+
+/* 
+    Q6-13
+    user テーブルに対して、idで降順ソートし2 ~ 4件目までのレコードを取得するクエリ
+*/
+select * from user order by id desc limit 2, 4;
+
+/* 
+    Q6-14 
+    user  テーブルに対して、レコード数をカウントするクエリ
+*/
+select count(*) from user;
+
+/*
+    Q6-15
+    userテーブルに対して、ageカラムの値ごとに、レコード数を集計するクエリ
+*/
+
+
+
+
 
 
 

@@ -43,7 +43,7 @@ select * from user order by age asc;
 select * from user order by id asc, age desc;                     
 ```
 
-## `WHERE`句
+### `WHERE`句
 ```
 //080を含むレコードを検索
 select * from user_info where phone like "%080%";  
@@ -57,3 +57,28 @@ select * from user_info where phone like "%080";
 //山が二文字目にくるレコードを検索
 select * from user_info where name like "_山%";
 ```
+
+### 取得範囲を限定する
+```
+//1〜4のレコードを取得する
+select * from user where id between 1 and 4; 
+
+//1または4のレコードを取得する
+select * from user where id=1 or id=4;
+
+//idで降順にし、2〜4件目までのレコードを取得するクエリ
+select * from user order by id desc limit 2, 4;
+```
+
+## レコード数をカウント
+```
+//レコード数をカウント
+select count(*) from user; 
+
+//指定した列にNULLを含まないレコード数を取得
+select count(age) from user;
+
+//重複を含まないレコード数の取得
+select count(distinct age) from user;
+```
+
